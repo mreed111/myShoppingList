@@ -24,7 +24,15 @@ var server = http.createServer(function (req, res) {
         return true;
     };
 
-
+    var getInputValue = function () {
+        var item = '';
+        req.setEncoding('utf8');
+        req.on('data', function (chunk) {
+            item += chunk;
+        }); 
+        req.on('end', return item);
+    };
+  
     switch (req.method) {
     case 'POST':
         var item = '';
@@ -55,18 +63,19 @@ var server = http.createServer(function (req, res) {
         break;
 
     case 'PUT':
-        if (getItem()) {
+        debugger;
+    /*    if (getItem()) {
             debugger;
             var item = '';
             req.setEncoding('utf8');
             req.on('data', function (chunk) {
                 item += chunk;
             }); 
-            req.on('end', function () {
-                items.splice(itemIndex,1,item);
+            req.on('end', function () { */
+                items.splice(itemIndex,1,getInputValue());
                 res.end('Item ' + itemIndex + ' updated to "' + items[itemIndex] + '"');
-            });
-        }
+    //        });
+    //    }
         break;
     }
 });
