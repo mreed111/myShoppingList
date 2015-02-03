@@ -26,11 +26,15 @@ var server = http.createServer(function (req, res) {
 
     var getInputValue = function () {
         var item = '';
+        var listItemValue = '';
         req.setEncoding('utf8');
         req.on('data', function (chunk) {
             item += chunk;
         }); 
-        req.on('end', return item);
+        req.on('end', function () {
+            listItemValue = item;
+        });
+        return listItemValue;
     };
   
     switch (req.method) {
@@ -64,18 +68,10 @@ var server = http.createServer(function (req, res) {
 
     case 'PUT':
         debugger;
-    /*    if (getItem()) {
-            debugger;
-            var item = '';
-            req.setEncoding('utf8');
-            req.on('data', function (chunk) {
-                item += chunk;
-            }); 
-            req.on('end', function () { */
-                items.splice(itemIndex,1,getInputValue());
-                res.end('Item ' + itemIndex + ' updated to "' + items[itemIndex] + '"');
-    //        });
-    //    }
+        if (getItem()) {
+            items.splice(itemIndex,1,getInputValue());
+            res.end('Item ' + itemIndex + ' updated to "' + items[itemIndex] + '"');
+        }
         break;
     }
 });
